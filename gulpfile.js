@@ -19,26 +19,27 @@ function move() {
     gulp
         .src(paths.html.src, {since: gulp.lastRun(move)})
 
-
+        //get rid of sheets artifacts
         .pipe(replace('""', '"'))
         .pipe(replace('"<', '<'))
         .pipe(replace('>"', '>'))
         .pipe(replace('>,', '>'))
         
-        //mini html
+        //minify html
         .pipe(htmlmin({ collapseWhitespace: true }))
 
-        //mini css js
+        //minify css js
         .pipe(minifyInline())
 
         //rename
         .pipe(rename({extname: '.DIST.html'}))
         
+        //move to dist
         .pipe(gulp.dest(paths.html.dest))
   );
 };
 
-//watcher //use done to signal async completion
+//watcher (use done to signal async completion)
 gulp.task('watch', function(done){
   gulp.watch(paths.html.src, move); 
   done();
